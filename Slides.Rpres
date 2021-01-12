@@ -1,0 +1,73 @@
+Grit and Self Concordance
+========================================================
+author: Benjamin Lira Luttges
+date: Jan 11, 2021
+autosize: true
+
+Background
+========================================================
+
+Grit is often seen as equivalent to 
+
+Preliminary Data
+========================================================
+```{r, echo = F}
+library(tidyverse)
+# devtools::install_github("lirabenjamin/Ben")
+library(Ben)
+gr = read_csv('Data/cleaned_grit rubric.csv')
+gr %>% 
+  select(Grit,`Self-concordant goals` = scg) %>% 
+  ggplot(aes(Grit,`Self-concordant goals`))+
+  geom_jitter() + 
+  geom_smooth(method= "lm")+
+  geom_hline(yintercept = 4)+
+  geom_vline(xintercept = 3)+
+  geom_hline(yintercept = 4.832910, linetype=2,color ="red")+
+  geom_vline(xintercept = 3.673401, linetype=2,color ="red")+
+  annotate("rect",xmin = 3.673401,xmax = 5,ymin = 2,ymax = 4.832910,fill = "red", alpha = .1)+
+  annotate("rect",xmin = 3,xmax = 5,ymin = 2,ymax = 4,fill = "black", alpha = .3)+
+  Ben::theme_ang()+
+  labs(title = "Grit and self-concordance",
+       subtitle = "There are people high in grit who are extrinsically motivated\nMidpoint of scales in black, means in red")
+
+```
+Preliminary Data
+========================================================
+```{r, echo = F}
+library(tidyverse)
+# devtools::install_github("lirabenjamin/Ben")
+library(Ben)
+gr = read_csv('~/Dropbox (Character Lab)/Grit Rubric Project/Data/cleaned_grit rubric.csv')
+gr %>% 
+  select(Grit,`Self-concordant goals` = scg) %>% 
+  ggplot(aes(Grit,`Self-concordant goals`))+
+  geom_jitter() + 
+  geom_smooth(method= "lm")+
+  geom_hline(yintercept = 4)+
+  geom_vline(xintercept = 3)+
+  geom_hline(yintercept = 4.832910, linetype=2,color ="red")+
+  geom_vline(xintercept = 3.673401, linetype=2,color ="red")+
+  annotate("rect",xmin = 3.673401,xmax = 5,ymin = 2,ymax = 4.832910,fill = "red", alpha = .1)+
+  annotate("rect",xmin = 3,xmax = 5,ymin = 2,ymax = 4,fill = "black", alpha = .3)+
+  Ben::theme_ang()+
+  labs(title = "Grit and self-concordance")
+
+```
+Preliminary Data
+========================================================
+```{r, echo = F}
+gr %>% 
+  select(Grit,starts_with("scg2")) %>% 
+  select(1:4) %>% 
+  clnR2::cv_bake(new = Introjection, quos(scg2_goal1,scg2_goal2,scg2_goal3)) %T>% 
+  Ben::HARcor() %>% 
+  ggplot(aes(Grit,Introjection))+geom_jitter() + geom_smooth(method= "lm")+
+  labs(subtitle = "r = -.31",
+       title = "Grit and introjection are negatively related")+
+  theme_ang()
+```
+
+Slide With Plot
+========================================================
+One week later, all students were asked to report on their progress toward their goal. Specifically, they reported how well they felt they accomplished their goal (1 = extremely poorly to 5 = extremely well), and how tempted they felt by distractions in their environment over the past week (1 = not at all tempted to 5 = extremely tempted). Finally, we asked students to complete a checklist of five strategies, indicating any and all they had used in the past week. The five strategies were described without naming them categorically. For example, students who indicated they had “changed my surroundings so that the temptation was out of reach or not easily accessible” were considered having used situation modification. Students who indicated, “I told myself, I will not give in to temptation” were considered having used response modulation.

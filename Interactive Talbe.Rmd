@@ -1,0 +1,63 @@
+---
+title: "Interactive Tables"
+author: "Benjamin Lira"
+date: "1/11/2021"
+runtime: shiny
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+Hi!
+
+Here is a shiny widget to show personalized tables, based on what predictors you want to use. Select the grit and self-concordance facets from the drop down menus, and the parameters of the model will be updated accordingly.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+scores = read_rds("Data/scores.rds") 
+scores = scores
+lms = read_rds("Data/lms.rds") %>% 
+  mutate(`SC Facet` = ifelse(`SC Facet` == "RAI","Self-concordance",`SC Facet`)) %>% 
+  rename(gf = `Grit Facet`,
+         sf = `SC Facet`)
+lms = lms %>% mutate(term = case_when(term == "Grit" ~ gf,
+                                term == "Self Concordance" ~ sf,
+                                T ~ term)) %>% ungroup()
+```
+
+
+# Do grit and self-concordance interact in the prediction of burnout?
+```{r table}
+inputPanel(
+  selectInput("gr", label = "Grit score:",
+              choices = c("Grit","Passion","Perseverance"), selected = "Grit"),
+  
+  selectInput("sc", label = "Self-concordance score:",
+              choices = c("External","Introjected","Identified","Intrinsic","Self-concordance"), selected = "Self-concordance")
+)
+
+renderTable({
+  lms %>% filter(gf == input$gr,
+                 sf == input$sc) %>% 
+    mutate(beta = Ben::formatest(estimate,p.value)) %>% 
+    select(term,beta,std.error,t = statistic, p.value)
+})
+```
+
+```{r}
+library(interactions)
+sc = reactive(ifelse(input$sc == "Self-concordance","RAI",input$sc))
+renderPlot({
+  interact_plot(model = lm(glue::glue("Burnout~{input$gr}*{sc()}+Age+Gender+Education+Hours+Pay"),data=scores),pred = input$gr,modx = sc(),
+              plot.points = T,
+              colors = c("#990000","#000000","#011F5b"),vary.lty = F,jitter = T,point.alpha = .2,interval = T)+
+  theme_gray()+
+  theme_sl()
+})
+```
+
+
+
+
