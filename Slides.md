@@ -11,9 +11,8 @@ Grit is often seen as equivalent to
 
 Preliminary Data
 ========================================================
-![plot of chunk unnamed-chunk-1](Slides-figure/unnamed-chunk-1-1.png)
-Preliminary Data
-========================================================
+
+
 
 
 
@@ -29,19 +28,7 @@ processing file: Slides.Rpres
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()
-
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  .default = col_double()
-)
-ℹ Use `spec()` for the full column specifications.
-
-`geom_smooth()` using formula 'y ~ x'
-Quitting from lines 38-56 (Slides.Rpres) 
-Error: '~/Dropbox (Character Lab)/Grit Rubric Project/Data/cleaned_grit rubric.csv' does not exist.
-In addition: Warning messages:
-1: Missing column names filled in: 'X1' [1] 
-2: Removed 1 rows containing non-finite values (stat_smooth). 
-3: Removed 1 rows containing missing values (geom_point). 
+Quitting from lines 15-34 (Slides.Rpres) 
+Error: 'Data/cleaned_grit rubric.csv' does not exist in current working directory ('/Users/benjaminlira/Documents/GitHub/SDT').
 Execution halted
 ```
